@@ -1,7 +1,8 @@
 class ArticlesController < ApplicationController
-  before_action :authenticate_user!
+  #before_action :authenticate_user!
   def index
     @articles = Article.all
+    render json: ArticleSerializer.new(@articles).serialized_json
   end
 
   def show
