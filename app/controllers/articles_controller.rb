@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   #before_action :authenticate_user!
+  skip_before_action :verify_authenticity_token
   def index
     @articles = Article.all
     render json: ArticleSerializer.new(@articles).serialized_json
@@ -19,7 +20,7 @@ class ArticlesController < ApplicationController
     if @article.save
       redirect_to @article
     else
-      render :new, status: :unprocessable_entity
+      render json: errors(@article), status: 422
     end
   end
 
@@ -31,7 +32,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
 
     if @article.update(article_params)
-      redirect_to @article
+      #redirect_to @article
     else
       render :edit, status: :unprocessable_entity
     end
